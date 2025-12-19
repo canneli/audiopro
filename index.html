@@ -5,9 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Canneli Audio Beta</title>
   
-  <!-- ÍCONE PROFISSIONAL (Estilo App: Fundo Gradiente + Logo Branco) -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff0055'/%3E%3Cstop offset='100%25' stop-color='%238800ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='120' fill='url(%23bg)'/%3E%3Cpath d='M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0' stroke='%23ffffff' stroke-width='40' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff0055'/%3E%3Cstop offset='100%25' stop-color='%238800ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='120' fill='url(%23bg)'/%3E%3Cpath d='M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0' stroke='%23ffffff' stroke-width='40' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <!-- Ícones: Definimos placeholders aqui, mas o Script abaixo gera o PNG real para o iOS -->
+  <link rel="icon" id="faviconLink" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff0055'/%3E%3Cstop offset='100%25' stop-color='%238800ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='120' fill='url(%23bg)'/%3E%3Cpath d='M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0' stroke='%23ffffff' stroke-width='40' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" id="appleIconLink" href="">
+
+  <!-- SCRIPT DE GERAÇÃO DE ÍCONE IOS (Corrige o problema do "print" no iPhone) -->
+  <script>
+    (function() {
+      // Cria um canvas para desenhar o ícone em PNG real
+      const size = 512;
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // 1. Fundo Gradiente (iOS gosta de quadrados, ele arredonda sozinho)
+      const grad = ctx.createLinearGradient(0, 0, size, size);
+      grad.addColorStop(0, '#ff0055');
+      grad.addColorStop(1, '#8800ff');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, size, size);
+
+      // 2. Desenhar a Onda Sonora (Réplica do SVG)
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 40;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      function line(x, y, h) {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y + h);
+        ctx.stroke();
+      }
+
+      // Coordenadas ajustadas para centralizar no canvas 512x512
+      line(128, 256, 0.1);   // Ponto
+      line(160, 160, 192); // Linha
+      line(224, 64, 384);  // Linha Grande
+      line(288, 192, 128); // Linha Pequena
+      line(352, 128, 256); // Linha Média
+      line(416, 320, 0.1);   // Ponto
+
+      // 3. Converter para PNG Data URI e injetar no cabeçalho
+      const pngUrl = canvas.toDataURL('image/png');
+      
+      // Atualiza tags assim que o script roda
+      window.addEventListener('load', () => {
+          const appleLink = document.getElementById('appleIconLink');
+          const favLink = document.getElementById('faviconLink');
+          if(appleLink) appleLink.href = pngUrl;
+          if(favLink) favLink.href = pngUrl;
+          console.log("Ícone PNG gerado para iOS");
+      });
+    })();
+  </script>
 
   <!-- PWA MANIFEST (Com o novo ícone embutido) -->
   <link rel="manifest" href='data:application/manifest+json,{"name":"Canneli Audio Beta","short_name":"Canneli","start_url":".","id":"/","display":"standalone","background_color":"#08000a","theme_color":"#ff0055","description":"Gravador de audio profissional","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Cdefs%3E%3ClinearGradient id=%27bg%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%23ff0055%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%238800ff%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%27512%27 height=%27512%27 rx=%27120%27 fill=%27url(%23bg)%27/%3E%3Cpath d=%27M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0%27 stroke=%27%23ffffff%27 stroke-width=%2740%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}]}'>
