@@ -127,15 +127,15 @@
       color: #fff;
       border: none;
       
-      padding: 16px 32px;
+      padding: 18px 40px; /* Mais gordinho */
       border-radius: 50px;
       
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       
-      display: none; /* Controlado pelo JS */
+      display: flex; /* Forçar visibilidade para aparecer sempre */
       align-items: center;
       gap: 12px;
       
@@ -435,12 +435,14 @@
            e.respondWith(fetch(e.request));
          });
        `;
-       const blob = new Blob([swCode], {type: 'application/javascript'});
-       const swUrl = URL.createObjectURL(blob);
-       
-       navigator.serviceWorker.register(swUrl)
-         .then(r => console.log('SW registrado com sucesso:', r))
-         .catch(e => console.log('Erro ao registrar SW:', e));
+       // Tenta registrar SW apenas se suportado (pode falhar em iframes)
+       try {
+           const blob = new Blob([swCode], {type: 'application/javascript'});
+           const swUrl = URL.createObjectURL(blob);
+           navigator.serviceWorker.register(swUrl)
+             .then(r => console.log('SW registrado:', r))
+             .catch(e => console.log('SW erro (normal em preview):', e));
+       } catch (e) { console.log('SW não suportado neste ambiente'); }
     }
 
     // --- LÓGICA DE INSTALAÇÃO PWA ---
@@ -450,12 +452,15 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      installBtn.style.display = 'flex'; // Torna visível quando disponível
       console.log("App pronto para instalar (Evento capturado)!");
     });
 
     installBtn.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
+      if (!deferredPrompt) {
+        // Fallback caso o evento não tenha disparado (comum em previews/iframes)
+        alert("Para instalar:\n\n1. No Chrome: Clique nos 3 pontinhos > 'Instalar Canneli Audio' ou 'Adicionar ao Ecrã Principal'.\n2. No Safari (iOS): Botão Partilhar > 'Adicionar ao Ecrã Principal'.\n\n(A instalação automática requer HTTPS e contexto seguro).");
+        return;
+      }
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       console.log(`Usuário escolheu: ${outcome}`);
