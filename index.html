@@ -446,7 +446,7 @@
   <!-- BOTÃO FLUTUANTE DE INSTALAÇÃO (Fora do App Shell para ficar sobre tudo) -->
   <button id="btnInstall" title="Instalar Aplicativo">
     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-    BAIXAR APP
+    INSTALAR
   </button>
 
   <script>
@@ -490,8 +490,8 @@
 
     installBtn.addEventListener('click', async () => {
       if (!deferredPrompt) {
-        // Fallback caso o evento não tenha disparado (comum em previews/iframes)
-        alert("Para instalar:\n\n1. No Chrome: Clique nos 3 pontinhos > 'Instalar Canneli Audio' ou 'Adicionar ao Ecrã Principal'.\n2. No Safari (iOS): Botão Partilhar > 'Adicionar ao Ecrã Principal'.\n\n(A instalação automática requer HTTPS e contexto seguro).");
+        // Fallback com instruções corrigidas para Desktop e Mobile
+        alert("Instalação Manual:\n\n💻 PC/Chrome: Clique no ícone de 'Instalar' na barra de endereços (canto direito superior) ou vá ao Menu > 'Guardar e partilhar' > 'Instalar Canneli Audio Beta'.\n\n📱 Android: Menu > 'Adicionar ao ecrã principal'.\n\n📱 iOS: Botão Partilhar > 'Adicionar ao ecrã principal'.");
         return;
       }
       deferredPrompt.prompt();
