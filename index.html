@@ -158,6 +158,22 @@
       animation: pulseGlow 4s infinite ease-in-out;
       overflow: hidden;
     }
+
+    /* MEDIA QUERY PARA MOBILE - BOTÃO MAIS COMPACTO */
+    @media (max-width: 600px) {
+        #btnInstall {
+            padding: 10px 20px; /* Menor padding */
+            font-size: 10px;    /* Fonte menor */
+            bottom: 20px;       /* Mais próximo da borda inferior */
+            right: 20px;
+            letter-spacing: 1px;
+            border-radius: 20px;
+        }
+        #btnInstall svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
     
     /* Brilho interno ao passar o mouse */
     #btnInstall::before {
