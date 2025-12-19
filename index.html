@@ -187,16 +187,23 @@
       border-radius: 30px;
       padding: 16px 32px;
       
-      display: flex; 
+      display: none; /* Escondido por padrão, lógica JS decide mostrar */
       align-items: center;
       justify-content: center;
       gap: 12px;
       
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 0 20px rgba(255, 0, 85, 0.2);
-      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease; /* Adicionado transição de opacidade */
       cursor: pointer;
       animation: pulseGlow 4s infinite ease-in-out;
       overflow: hidden;
+      opacity: 0; /* Começa invisível para fade-in */
+    }
+
+    /* Classe para fade-in visível */
+    #btnInstall.visible {
+        display: flex;
+        opacity: 1;
     }
 
     /* MEDIA QUERY PARA MOBILE - BOTÃO DISCRETO */
@@ -539,11 +546,45 @@
     let deferredPrompt;
     const installBtn = document.getElementById('btnInstall');
 
+    // Função para mostrar o botão com lógica de tempo e primeira visita
+    function showInstallButton() {
+        // Verifica se já foi mostrado anteriormente
+        const hasSeenInstall = localStorage.getItem('hasSeenInstallPrompt');
+        
+        if (!hasSeenInstall) {
+            installBtn.classList.add('visible'); // Mostra o botão com fade-in
+            
+            // Marca como visto para não mostrar na próxima recarga (opcional, remova se quiser sempre na primeira vez da sessão)
+            localStorage.setItem('hasSeenInstallPrompt', 'true');
+
+            // Esconde após 15 segundos
+            setTimeout(() => {
+                installBtn.style.opacity = '0';
+                // Remove do DOM após a transição de opacidade (0.5s)
+                setTimeout(() => {
+                    installBtn.style.display = 'none';
+                    installBtn.classList.remove('visible');
+                }, 500);
+            }, 15000); // 15000 ms = 15 segundos
+        }
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
       console.log("App pronto para instalar (Evento capturado)!");
+      showInstallButton(); // Chama a função para mostrar condicionalmente
     });
+
+    // Fallback para ambientes de teste onde beforeinstallprompt pode não disparar
+    // (Apenas para garantir que você veja o botão funcionando agora)
+    // Em produção, você pode querer remover este setTimeout se confiar apenas no evento
+    setTimeout(() => {
+        if (!deferredPrompt && !localStorage.getItem('hasSeenInstallPrompt')) {
+             showInstallButton();
+        }
+    }, 1000);
+
 
     installBtn.addEventListener('click', async () => {
       if (!deferredPrompt) {
