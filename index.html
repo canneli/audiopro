@@ -5,15 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Canneli Audio Pro - Web Edition</title>
   
-  <!-- FAVICON: Onda sonora estilizada com as cores do app -->
+  <!-- FAVICON: Onda sonora estilizada -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff0055'/%3E%3Cstop offset='100%25' stop-color='%238800ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%2308000a'/%3E%3Cpath d='M12 32h0m8-12v24m8-36v48m8-32v16m8-24v32m8-8h0' stroke='url(%23g)' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
 
-  <!-- Fonte Montserrat (Google Fonts) para garantir o estilo original -->
+  <!-- PWA MANIFEST (Embutido via Data URI para funcionar em arquivo único) -->
+  <link rel="manifest" href='data:application/manifest+json,{"name":"Canneli Audio Pro","short_name":"Canneli","start_url":".","display":"standalone","background_color":"#08000a","theme_color":"#ff0055","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%23ff0055%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%238800ff%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2764%27 height=%2764%27 rx=%2716%27 fill=%27%2308000a%27/%3E%3Cpath d=%27M12 32h0m8-12v24m8-36v48m8-32v16m8-24v32m8-8h0%27 stroke=%27url(%23g)%27 stroke-width=%275%27 stroke-linecap=%27round%27/%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
+
+  <!-- Fonte Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Biblioteca LAMEJS para codificação MP3 no navegador -->
+  <!-- LAMEJS -->
   <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
 
   <style>
@@ -49,7 +52,6 @@
       position: relative;
     }
 
-    /* BACKGROUND ANIMADO LUXUOSO (Adaptado para Fullscreen) */
     .bg-anim {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
       background: radial-gradient(circle at 10% 20%, #2a0000, transparent 40%),
@@ -63,10 +65,9 @@
     }
     @keyframes rotateBG { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    /* APP SHELL (O "Corpo" da extensão original) */
     .app-shell {
       width: 100%;
-      max-width: 400px; /* Largura levemente aumentada para Mobile */
+      max-width: 400px;
       height: 100%;
       max-height: 800px;
       background-color: var(--bg-deep);
@@ -75,7 +76,6 @@
       overflow-y: auto;
       overflow-x: hidden;
       box-shadow: 0 0 50px rgba(0,0,0,0.8);
-      /* Bordas arredondadas apenas se não for mobile full */
     }
 
     @media (min-width: 450px) {
@@ -86,7 +86,6 @@
         }
     }
 
-    /* SCROLLBAR CUSTOMIZADA */
     .app-shell::-webkit-scrollbar { width: 4px; }
     .app-shell::-webkit-scrollbar-track { background: transparent; }
     .app-shell::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
@@ -117,7 +116,31 @@
       margin-left: 6px; font-weight: 800; box-shadow: var(--glow-primary);
     }
 
-    /* Botão Popout removido/escondido na versão web */
+    /* ESTILO DO BOTÃO DE INSTALAÇÃO */
+    #btnInstall {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: none; /* Escondido por padrão, aparece via JS */
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+    }
+    #btnInstall:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: var(--glow-primary);
+      transform: translateY(-1px);
+    }
+    #btnInstall svg { width: 12px; height: 12px; fill: currentColor; }
+
     #btnPopout { display: none; }
 
     .container { padding: 24px; width: 100%; display: flex; flex-direction: column; gap: 20px; flex: 1; position: relative; }
@@ -268,10 +291,14 @@
 <body>
   <div class="bg-anim"></div>
   
-  <!-- APP SHELL: Contém toda a interface da "extensão" -->
   <main class="app-shell">
     <header>
       <h3><strong>Canneli</strong> Audio <span class="badge-pro">ULTRA</span></h3>
+      <!-- Botão de Instalar PWA -->
+      <button id="btnInstall" title="Instalar Aplicativo">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Instalar
+      </button>
       <button id="btnPopout" title="Janela">❐</button>
     </header>
 
@@ -361,7 +388,6 @@
       
       <button id="btnStop" class="btn-main"><span>■ PARAR</span></button>
 
-      <!-- Botão Share (escondido por padrão, pode não funcionar em todos browsers desktop) -->
       <button id="btnShare" style="margin-top:15px; background:none; border:none; color:var(--text-muted); font-size:9px; cursor:pointer; text-decoration:underline; display:none; letter-spacing:1px; text-transform:uppercase; order: 10;">Compartilhar Link</button>
 
       <div id="status">Pronto para criar mágica</div>
@@ -369,7 +395,39 @@
   </main>
 
   <script>
-    // --- LÓGICA PRINCIPAL (Adaptada do popup.js) ---
+    // --- LÓGICA DE INSTALAÇÃO PWA ---
+    let deferredPrompt;
+    const installBtn = document.getElementById('btnInstall');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Impede o Chrome de mostrar o prompt nativo automaticamente
+      e.preventDefault();
+      // Guarda o evento para usar depois
+      deferredPrompt = e;
+      // Mostra o nosso botão customizado
+      installBtn.style.display = 'flex';
+      console.log("App pronto para instalar!");
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      // Mostra o prompt de instalação nativo
+      deferredPrompt.prompt();
+      // Espera a escolha do usuário
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`Usuário escolheu: ${outcome}`);
+      // Reseta a variável
+      deferredPrompt = null;
+      // Esconde o botão
+      installBtn.style.display = 'none';
+    });
+
+    window.addEventListener('appinstalled', () => {
+      console.log('App instalado com sucesso');
+      installBtn.style.display = 'none';
+    });
+    
+    // --- LÓGICA PRINCIPAL DO AUDIO ---
 
     let mediaRecorder;
     let audioChunks = [];
@@ -425,8 +483,6 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       loadMicrophones();
-      // Inicializar contexto apenas quando necessário ou em click, 
-      // mas preparamos a variável.
       previewAudio.preservesPitch = true;
     });
 
@@ -449,7 +505,6 @@
 
     async function loadMicrophones() {
       try {
-        // Pedir permissão para listar devices
         await navigator.mediaDevices.getUserMedia({ audio: true });
         const devices = await navigator.mediaDevices.enumerateDevices();
         const mics = devices.filter(d => d.kind === 'audioinput');
@@ -557,8 +612,6 @@
       setUIState('loading');
       ui.status.innerText = "Carregando...";
       const buf = await blob.arrayBuffer();
-      
-      // Decodifica para o buffer original para edição
       originalBuffer = await audioCtx.decodeAudioData(buf);
       
       previewAudio.src = URL.createObjectURL(blob);
@@ -592,7 +645,6 @@
         buildPreviewGraph();
         
         if(previewAudio.paused) {
-            // Pequeno preview sonoro ao clicar
             previewAudio.currentTime = previewAudio.duration * selectionStart;
             previewAudio.play().catch(e => console.log("Play interrupted"));
             setTimeout(() => previewAudio.pause(), 1000);
@@ -800,7 +852,6 @@
     window.addEventListener('mousemove', e => { if(isDragging) updateSel(e); });
     window.addEventListener('mouseup', () => { isDragging=false; });
     
-    // Suporte touch básico para mobile
     ui.canvas.addEventListener('touchstart', e => {
         isDragging = true; const rect = ui.canvas.getBoundingClientRect(); dragStartX = e.touches[0].clientX - rect.left; updateSel(e.touches[0]);
     }, {passive: false});
@@ -828,7 +879,6 @@
     function processAudioSOLA(buffer, speed, pitch) {
         const channelData = buffer.getChannelData(0);
         
-        // 1. Resample (Pitch)
         const pitchFactor = Math.pow(2, pitch / 1200);
         const resampledLen = Math.floor(channelData.length / pitchFactor);
         const resampled = new Float32Array(resampledLen);
@@ -849,7 +899,6 @@
             resampled[i] = a*frac*frac*frac + b*frac*frac + c*frac + d;
         }
         
-        // 2. Time Stretch (SOLA)
         const stretchFactor = speed / pitchFactor;
         
         if (Math.abs(stretchFactor - 1.0) < 0.01) return resampled;
@@ -922,7 +971,6 @@
         return output;
     }
 
-    // --- RENDERIZAR FINAL ---
     ui.trim.addEventListener('click', () => {
       if (typeof lamejs === 'undefined') return alert("Erro: biblioteca lamejs não carregou.");
       previewAudio.pause();
@@ -944,11 +992,9 @@
           const slicedBuffer = audioCtx.createBuffer(1, sliceLen, rate);
           slicedBuffer.copyToChannel(originalBuffer.getChannelData(0).subarray(sFrame, eFrame), 0);
           
-          // 1. Processamento SOLA
           const processedData = processAudioSOLA(slicedBuffer, speed, pitch);
           
-          // 2. Efeitos via OfflineAudioContext
-          const renderLen = processedData.length + (rate * 2); // +2s tail para eco
+          const renderLen = processedData.length + (rate * 2); 
           const offCtx = new OfflineAudioContext(1, renderLen, rate);
           const src = offCtx.createBufferSource();
           const tempBuf = offCtx.createBuffer(1, processedData.length, rate);
@@ -961,7 +1007,6 @@
           src.start();
           const rendered = await offCtx.startRendering();
 
-          // 3. Encode MP3 com LameJS
           const mp3Enc = new lamejs.Mp3Encoder(1, rate, 192);
           const chan = rendered.getChannelData(0);
           const int16 = new Int16Array(chan.length);
