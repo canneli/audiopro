@@ -116,50 +116,83 @@
       margin-left: 6px; font-weight: 800; box-shadow: var(--glow-primary);
     }
 
-    /* ESTILO DO BOTÃO DE INSTALAÇÃO - FLUTUANTE E GORDINHO */
+    /* ESTILO DO BOTÃO DE INSTALAÇÃO - SOFISTICADO (GLASSMORPHISM) */
     #btnInstall {
       position: fixed;
       bottom: 30px;
       right: 30px;
       z-index: 2000;
       
-      background: linear-gradient(135deg, #ff0055, #ff0000);
+      /* Fundo com gradiente suave e blur */
+      background: rgba(20, 10, 30, 0.6); 
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      
+      /* Texto */
       color: #fff;
-      border: none;
-      
-      padding: 18px 40px; /* Mais gordinho */
-      border-radius: 50px;
-      
-      font-size: 16px;
-      font-weight: 900;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       
-      display: flex; /* Forçar visibilidade para aparecer sempre */
+      /* Borda Gradiente (Simulada com box-shadow ou border-image) */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      
+      padding: 16px 32px;
+      
+      display: flex; /* Visível por padrão */
       align-items: center;
+      justify-content: center;
       gap: 12px;
       
-      box-shadow: 0 10px 40px rgba(255, 0, 85, 0.5);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      /* Sombra Neon Sofisticada */
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 0 20px rgba(255, 0, 85, 0.2);
+        
+      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
       cursor: pointer;
-      animation: floatBtn 3s ease-in-out infinite;
+      animation: pulseGlow 4s infinite ease-in-out;
+      overflow: hidden;
     }
     
+    /* Brilho interno ao passar o mouse */
+    #btnInstall::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+    
+    #btnInstall:hover::before {
+      left: 100%;
+    }
+
     #btnInstall:hover {
-      transform: scale(1.1) translateY(-5px);
-      box-shadow: 0 20px 50px rgba(255, 0, 85, 0.7);
+      transform: translateY(-4px) scale(1.02);
+      background: rgba(255, 0, 85, 0.2);
+      border-color: rgba(255, 0, 85, 0.5);
+      box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(255, 0, 85, 0.4),
+        inset 0 0 30px rgba(255, 0, 85, 0.3);
     }
     
     #btnInstall svg { 
-        width: 24px; 
-        height: 24px; 
-        fill: currentColor; 
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        width: 20px; 
+        height: 20px; 
+        fill: #fff;
+        filter: drop-shadow(0 0 5px rgba(255, 0, 85, 0.8));
     }
 
-    @keyframes floatBtn {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-6px); }
+    @keyframes pulseGlow {
+        0%, 100% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,0,85,0.1); }
+        50% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 30px rgba(255,0,85,0.4); }
     }
 
     #btnPopout { display: none; }
