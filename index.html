@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Canneli Audio Beta</title>
-  
-  <!-- Ícones: Definimos placeholders aqui, mas o Script abaixo gera o PNG real para o iOS -->
+   
   <link rel="icon" id="faviconLink" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff0055'/%3E%3Cstop offset='100%25' stop-color='%238800ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='120' fill='url(%23bg)'/%3E%3Cpath d='M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0' stroke='%23ffffff' stroke-width='40' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="apple-touch-icon" id="appleIconLink" href="">
 
-  <!-- SCRIPT DE GERAÇÃO DE ÍCONE IOS (Corrige o problema do "print" no iPhone) -->
   <script>
     (function() {
       const size = 512;
@@ -54,25 +52,22 @@
     })();
   </script>
 
-  <!-- PWA MANIFEST (display: standalone remove a barra de endereços) -->
   <link rel="manifest" href='data:application/manifest+json,{"name":"Canneli Audio Beta","short_name":"Canneli","start_url":".","id":"/","display":"standalone","background_color":"#08000a","theme_color":"#ff0055","description":"Gravador de audio profissional","orientation":"portrait","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Cdefs%3E%3ClinearGradient id=%27bg%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%23ff0055%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%238800ff%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%27512%27 height=%27512%27 rx=%27120%27 fill=%27url(%23bg)%27/%3E%3Cpath d=%27M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0%27 stroke=%27%23ffffff%27 stroke-width=%2740%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Cdefs%3E%3ClinearGradient id=%27bg%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%23ff0055%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%238800ff%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%27512%27 height=%27512%27 rx=%27120%27 fill=%27url(%23bg)%27/%3E%3Cpath d=%27M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0%27 stroke=%27%23ffffff%27 stroke-width=%2740%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}]}'>
 
-  <!-- Meta tags para iOS web app capable (Tela cheia no iPhone) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- Fonte Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- LAMEJS -->
   <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
 
   <style>
     :root {
       --primary: #ff0055;
       --secondary: #8800ff;
+      --cyan: #00e5ff;
       --accent: #ffffff;
       --bg-deep: #08000a;
       --glass-panel: rgba(20, 10, 30, 0.6);
@@ -80,7 +75,6 @@
       --text-main: #ffffff;
       --text-muted: #b3b3b3;
       --glow-primary: 0 0 25px rgba(255, 0, 85, 0.5);
-      --glow-secondary: 0 0 25px rgba(136, 0, 255, 0.4);
       --success: #2ecc71;
       --danger: #ff4757;
     }
@@ -165,95 +159,63 @@
       margin-left: 6px; font-weight: 800; box-shadow: var(--glow-primary);
     }
 
-    /* ESTILO DO BOTÃO DE INSTALAÇÃO - SOFISTICADO */
+    /* ESTILO DO BOTÃO DE INSTALAÇÃO */
     #btnInstall {
       position: fixed;
       bottom: 30px;
       right: 30px;
       z-index: 2000;
-      
       background: rgba(20, 10, 30, 0.6); 
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      
       color: #fff;
       font-family: 'Montserrat', sans-serif;
       font-size: 14px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 2px;
-      
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 30px;
       padding: 16px 32px;
-      
-      display: none; /* Escondido por padrão, lógica JS decide mostrar */
+      display: none;
       align-items: center;
       justify-content: center;
       gap: 12px;
-      
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 0 20px rgba(255, 0, 85, 0.2);
-      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease; /* Adicionado transição de opacidade */
+      transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease;
       cursor: pointer;
       animation: pulseGlow 4s infinite ease-in-out;
       overflow: hidden;
-      opacity: 0; /* Começa invisível para fade-in */
+      opacity: 0;
     }
 
-    /* Classe para fade-in visível */
-    #btnInstall.visible {
-        display: flex;
-        opacity: 1;
-    }
+    #btnInstall.visible { display: flex; opacity: 1; }
 
-    /* MEDIA QUERY PARA MOBILE - BOTÃO DISCRETO */
     @media (max-width: 600px) {
         #btnInstall {
-            padding: 8px 14px; /* Muito menor */
-            font-size: 9px;    /* Letra discreta */
-            bottom: 10px;      /* Canto inferior */
-            right: 10px;
-            letter-spacing: 1px;
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.5); /* Mais escuro */
-            backdrop-filter: blur(5px);
+            padding: 8px 14px; font-size: 9px; bottom: 10px; right: 10px;
+            letter-spacing: 1px; border-radius: 15px;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: none; /* Remove sombra forte */
-            animation: none;  /* Remove pulsação para não distrair */
-            opacity: 0.7;     /* Semitransparente */
+            box-shadow: none; animation: none; opacity: 0.7;
         }
-        #btnInstall:hover {
-            opacity: 1;
-            transform: none;
-        }
-        #btnInstall svg {
-            width: 10px;
-            height: 10px;
-        }
+        #btnInstall:hover { opacity: 1; transform: none; }
+        #btnInstall svg { width: 10px; height: 10px; }
     }
     
     #btnInstall::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
       transition: 0.5s;
     }
-    
     #btnInstall:hover::before { left: 100%; }
-
     #btnInstall:hover {
       transform: translateY(-4px) scale(1.02);
       background: rgba(255, 0, 85, 0.2);
       border-color: rgba(255, 0, 85, 0.5);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 0, 85, 0.4), inset 0 0 30px rgba(255, 0, 85, 0.3);
     }
-    
-    #btnInstall svg { 
-        width: 20px; height: 20px; fill: #fff;
-        filter: drop-shadow(0 0 5px rgba(255, 0, 85, 0.8));
-    }
+    #btnInstall svg { width: 20px; height: 20px; fill: #fff; filter: drop-shadow(0 0 5px rgba(255, 0, 85, 0.8)); }
 
     @keyframes pulseGlow {
         0%, 100% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,0,85,0.1); }
@@ -364,9 +326,17 @@
       order: 5;
     }
     
-    #btnRecord { background: linear-gradient(135deg, #ff0055, #ff0000); color: white; }
+    #btnRecord { background: linear-gradient(135deg, #ff0055, #ff0000); color: white; margin-bottom: 10px; }
     #btnRecord:hover { box-shadow: 0 0 30px rgba(255, 0, 85, 0.6); transform: translateY(-1px); }
     
+    /* Novo botão para Sistema */
+    #btnRecordSys { 
+        background: linear-gradient(135deg, #00e5ff, #2979ff); 
+        color: #000; 
+        margin-bottom: 15px; 
+    }
+    #btnRecordSys:hover { box-shadow: 0 0 30px rgba(0, 229, 255, 0.6); transform: translateY(-1px); color: #fff; }
+
     #btnStop { background: #fff; color: #000; display: none; }
     
     #btnTrim { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: #fff; }
@@ -413,7 +383,6 @@
   <main class="app-shell">
     <header>
       <h3><strong>Canneli</strong> Audio <span class="badge-pro">BETA</span></h3>
-      <!-- Botão removido do header -->
       <button id="btnPopout" title="Janela">❐</button>
     </header>
 
@@ -423,7 +392,6 @@
         <span class="select-arrow">▼</span>
       </div>
 
-      <!-- VISUALIZER -->
       <div class="visualizer" id="visualizer">
         <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
         <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -431,7 +399,6 @@
         <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
       </div>
 
-      <!-- EDITOR -->
       <div id="editorArea">
         <canvas id="waveCanvas" width="330" height="90"></canvas>
         <div class="editor-time">
@@ -447,7 +414,6 @@
         <button id="btnTrim" class="btn-main">PROCESSAR E SALVAR</button>
       </div>
 
-      <!-- Final Split Area -->
       <div id="finalWrapper">
         <div id="finalSave" draggable="true" class="final-card" title="Clique para baixar ou arraste">
           <div class="icon-save">💾</div>
@@ -461,7 +427,6 @@
         </div>
       </div>
 
-      <!-- Effects -->
       <div class="effects-container-block">
         <span class="section-title">Estúdio de Efeitos</span>
         <div class="effects-grid">
@@ -474,7 +439,6 @@
         </div>
       </div>
 
-      <!-- Sliders -->
       <div id="paramControls">
         <div class="slider-row" id="rowSpeed">
           <label>Velocidade</label>
@@ -496,7 +460,8 @@
       <audio id="resultPlayer" controls></audio>
       <button id="btnBackEdit">↩ Voltar para Edição</button>
 
-      <button id="btnRecord" class="btn-main"><span>● INICIAR GRAVAÇÃO</span></button>
+      <button id="btnRecord" class="btn-main"><span>● GRAVAR MICROFONE</span></button>
+      <button id="btnRecordSys" class="btn-main"><span>📺 GRAVAR DO NAVEGADOR</span></button>
       
       <button id="btnUpload"><span>📁</span> Importar Áudio</button>
       <input type="file" id="uploadInput" accept="audio/*" hidden>
@@ -509,102 +474,55 @@
     </div>
   </main>
   
-  <!-- BOTÃO FLUTUANTE DE INSTALAÇÃO -->
   <button id="btnInstall" title="Instalar Aplicativo">
     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
     INSTALAR
   </button>
 
   <script>
-    // --- SERVICE WORKER (Necessário para PWA) ---
+    // --- SERVICE WORKER ---
     if ('serviceWorker' in navigator) {
        if (window.location.protocol === 'file:') {
-           console.warn("Aviso: Instalação PWA não funciona em protocolo file://. Use um servidor local (http/https).");
+           console.warn("Aviso: Instalação PWA não funciona em protocolo file://.");
        }
-
        const swCode = `
-         self.addEventListener('install', (e) => {
-           self.skipWaiting();
-         });
-         self.addEventListener('activate', (e) => {
-           e.waitUntil(self.clients.claim());
-         });
-         self.addEventListener('fetch', (e) => {
-           e.respondWith(fetch(e.request));
-         });
+         self.addEventListener('install', (e) => { self.skipWaiting(); });
+         self.addEventListener('activate', (e) => { e.waitUntil(self.clients.claim()); });
+         self.addEventListener('fetch', (e) => { e.respondWith(fetch(e.request)); });
        `;
        try {
            const blob = new Blob([swCode], {type: 'application/javascript'});
            const swUrl = URL.createObjectURL(blob);
-           navigator.serviceWorker.register(swUrl)
-             .then(r => console.log('SW registrado:', r))
-             .catch(e => console.log('SW erro (normal em preview):', e));
-       } catch (e) { console.log('SW não suportado neste ambiente'); }
+           navigator.serviceWorker.register(swUrl).catch(e => console.log('SW erro:', e));
+       } catch (e) { console.log('SW não suportado'); }
     }
 
-    // --- LÓGICA DE INSTALAÇÃO PWA ---
+    // --- PWA INSTALL UI ---
     let deferredPrompt;
     const installBtn = document.getElementById('btnInstall');
-
-    // Função para mostrar o botão com lógica de tempo e primeira visita
     function showInstallButton() {
-        // Verifica se já foi mostrado anteriormente
         const hasSeenInstall = localStorage.getItem('hasSeenInstallPrompt');
-        
         if (!hasSeenInstall) {
-            installBtn.classList.add('visible'); // Mostra o botão com fade-in
-            
-            // Marca como visto para não mostrar na próxima recarga (opcional, remova se quiser sempre na primeira vez da sessão)
+            installBtn.classList.add('visible'); 
             localStorage.setItem('hasSeenInstallPrompt', 'true');
-
-            // Esconde após 15 segundos
             setTimeout(() => {
                 installBtn.style.opacity = '0';
-                // Remove do DOM após a transição de opacidade (0.5s)
-                setTimeout(() => {
-                    installBtn.style.display = 'none';
-                    installBtn.classList.remove('visible');
-                }, 500);
-            }, 15000); // 15000 ms = 15 segundos
+                setTimeout(() => { installBtn.style.display = 'none'; installBtn.classList.remove('visible'); }, 500);
+            }, 15000);
         }
     }
-
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      console.log("App pronto para instalar (Evento capturado)!");
-      showInstallButton(); // Chama a função para mostrar condicionalmente
+      e.preventDefault(); deferredPrompt = e; showInstallButton();
     });
-
-    // Fallback para ambientes de teste onde beforeinstallprompt pode não disparar
-    // (Apenas para garantir que você veja o botão funcionando agora)
-    // Em produção, você pode querer remover este setTimeout se confiar apenas no evento
-    setTimeout(() => {
-        if (!deferredPrompt && !localStorage.getItem('hasSeenInstallPrompt')) {
-             showInstallButton();
-        }
-    }, 1000);
-
-
+    setTimeout(() => { if (!deferredPrompt && !localStorage.getItem('hasSeenInstallPrompt')) showInstallButton(); }, 1000);
     installBtn.addEventListener('click', async () => {
-      if (!deferredPrompt) {
-        alert("Instalação Manual:\n\n💻 PC/Chrome: Clique no ícone de 'Instalar' na barra de endereços (canto direito superior) ou vá ao Menu > 'Transmitir, salvar ou compartilhar' > 'Instalar Canneli Audio Beta'.\n\n📱 Android: Menu > 'Adicionar ao ecrã principal'.\n\n📱 iOS: Botão Partilhar > 'Adicionar ao ecrã principal'.");
-        return;
-      }
+      if (!deferredPrompt) { alert("Use o menu do navegador para instalar."); return; }
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
-      console.log(`Usuário escolheu: ${outcome}`);
-      deferredPrompt = null;
-      installBtn.style.display = 'none';
-    });
-
-    window.addEventListener('appinstalled', () => {
-      console.log('App instalado com sucesso');
-      installBtn.style.display = 'none';
+      deferredPrompt = null; installBtn.style.display = 'none';
     });
     
-    // --- LÓGICA PRINCIPAL DO AUDIO ---
-
+    // --- LÓGICA DE ÁUDIO ---
     let mediaRecorder;
     let audioChunks = [];
     let audioCtx = null;
@@ -623,10 +541,10 @@
     let selectionEnd = 1;
     let isDragging = false;
     let dragStartX = 0;
-    let playbackMonitorId = null;
 
     const ui = {
       record: document.getElementById('btnRecord'),
+      recordSys: document.getElementById('btnRecordSys'), // NOVO
       stop: document.getElementById('btnStop'),
       trim: document.getElementById('btnTrim'),
       btnUpload: document.getElementById('btnUpload'),
@@ -657,26 +575,16 @@
       valMix: document.getElementById('valMix')
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadMicrophones();
-      previewAudio.preservesPitch = true;
-    });
+    document.addEventListener('DOMContentLoaded', () => { loadMicrophones(); previewAudio.preservesPitch = true; });
 
     async function ensureAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        await audioCtx.resume();
-      }
-      
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') await audioCtx.resume();
       if (!previewContext) {
         previewContext = new (window.AudioContext || window.webkitAudioContext)();
         previewSource = previewContext.createMediaElementSource(previewAudio);
       }
-      if (previewContext.state === 'suspended') {
-        await previewContext.resume();
-      }
+      if (previewContext.state === 'suspended') await previewContext.resume();
     }
 
     async function loadMicrophones() {
@@ -685,26 +593,18 @@
         const devices = await navigator.mediaDevices.enumerateDevices();
         const mics = devices.filter(d => d.kind === 'audioinput');
         ui.mic.innerHTML = '';
-        if (mics.length === 0) {
-            ui.mic.innerHTML = '<option>Microfone Padrão</option>';
-        }
+        if (mics.length === 0) ui.mic.innerHTML = '<option>Microfone Padrão</option>';
         mics.forEach(d => {
           const opt = document.createElement('option');
-          opt.value = d.deviceId;
-          opt.text = d.label || `Mic ${ui.mic.length + 1}`;
+          opt.value = d.deviceId; opt.text = d.label || `Mic ${ui.mic.length + 1}`;
           ui.mic.appendChild(opt);
         });
-      } catch (e) { 
-        ui.mic.innerHTML = '<option>Padrão (Permita o Mic)</option>'; 
-        console.warn("Permissão de mic negada ou erro ao listar", e);
-      }
+      } catch (e) { ui.mic.innerHTML = '<option>Padrão (Permita o Mic)</option>'; }
     }
 
     ui.btnUpload.addEventListener('click', () => ui.uploadInput.click());
     ui.uploadInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        
+        const file = e.target.files[0]; if (!file) return;
         await ensureAudioContext();
         ui.status.innerText = "Carregando arquivo...";
         try {
@@ -717,28 +617,10 @@
         } catch (err) { console.error(err); ui.status.innerText = "Erro ao carregar."; }
     });
 
-    ui.record.addEventListener('click', async () => {
-      try {
-        await ensureAudioContext();
-        originalBuffer = null;
-        audioChunks = [];
-        
-        const constraints = { 
-          audio: { 
-            deviceId: ui.mic.value ? { exact: ui.mic.value } : undefined, 
-            echoCancellation: true, 
-            noiseSuppression: true 
-          } 
-        };
-
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        
+    // --- FUNÇÃO DE INICIAR GRAVAÇÃO (Genérica) ---
+    async function startRecordingLogic(stream) {
         startVisualizer(stream);
-        
-        const options = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
-          ? { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 128000 } 
-          : {};
-          
+        const options = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 128000 } : {};
         mediaRecorder = new MediaRecorder(stream, options);
         mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
         mediaRecorder.onstop = async () => {
@@ -749,10 +631,47 @@
         };
         mediaRecorder.start();
         setUIState('recording');
-      } catch (e) { 
+    }
+
+    // --- GRAVAR MICROFONE ---
+    ui.record.addEventListener('click', async () => {
+      try {
+        await ensureAudioContext();
+        originalBuffer = null; audioChunks = [];
+        const constraints = { audio: { deviceId: ui.mic.value ? { exact: ui.mic.value } : undefined, echoCancellation: true, noiseSuppression: true } };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        startRecordingLogic(stream);
+      } catch (e) { alert("Erro no microfone."); }
+    });
+
+    // --- GRAVAR NAVEGADOR (SISTEMA) ---
+    ui.recordSys.addEventListener('click', async () => {
+      try {
+        await ensureAudioContext();
+        originalBuffer = null; audioChunks = [];
+        // Para áudio de sistema, usamos getDisplayMedia. 
+        // Nota: Chrome exige 'video: true' para permitir compartilhar a aba, mesmo que a gente só queira áudio.
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+            video: { displaySurface: "browser" }, 
+            audio: { 
+                echoCancellation: false, 
+                noiseSuppression: false, 
+                autoGainControl: false 
+            }
+        });
+
+        // Verifica se o usuário marcou a caixa de áudio
+        if (stream.getAudioTracks().length === 0) {
+            stream.getTracks().forEach(t => t.stop());
+            alert("⚠️ Você esqueceu de marcar 'Compartilhar áudio da guia' na janela do navegador.");
+            return;
+        }
+
+        ui.status.innerText = "Capturando áudio da aba...";
+        startRecordingLogic(stream);
+      } catch (e) {
         console.error(e);
-        alert("Não foi possível acessar o microfone. Verifique as permissões do site.");
-        ui.status.innerText = "Erro: " + e.message; 
+        if(e.name !== 'NotAllowedError') alert("Erro ao capturar sistema: " + e.message);
       }
     });
 
@@ -761,7 +680,10 @@
     let animationId;
     function startVisualizer(stream) {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const src = audioCtx.createMediaStreamSource(stream);
+      // Se for stream de display, pode ter vídeo, pegamos só o audio
+      let src;
+      try { src = audioCtx.createMediaStreamSource(stream); } catch(e) { return; }
+      
       const analyser = audioCtx.createAnalyser();
       analyser.fftSize = 64;
       src.connect(analyser);
@@ -789,17 +711,13 @@
       ui.status.innerText = "Carregando...";
       const buf = await blob.arrayBuffer();
       originalBuffer = await audioCtx.decodeAudioData(buf);
-      
       previewAudio.src = URL.createObjectURL(blob);
       selectionStart = 0; selectionEnd = 1; 
-      
       ui.speedSlider.value = 1.0; ui.valSpeed.innerText = "1.0x";
       ui.pitchSlider.value = 0; ui.valPitch.innerText = "0";
       ui.mixSlider.value = 50; ui.valMix.innerText = "50%";
-      
       activeEffects.clear();
       updateEffectButtons();
-      
       drawWaveform();
       updateTimeLabels();
       setUIState('editing');
@@ -810,16 +728,9 @@
       btn.addEventListener('click', async () => {
         await ensureAudioContext();
         const fx = btn.dataset.fx;
-        if (fx === 'none') {
-            activeEffects.clear();
-        } else {
-            if (activeEffects.has(fx)) activeEffects.delete(fx);
-            else activeEffects.add(fx);
-        }
-        
-        updateEffectButtons();
-        buildPreviewGraph();
-        
+        if (fx === 'none') { activeEffects.clear(); } 
+        else { if (activeEffects.has(fx)) activeEffects.delete(fx); else activeEffects.add(fx); }
+        updateEffectButtons(); buildPreviewGraph();
         if(previewAudio.paused) {
             previewAudio.currentTime = previewAudio.duration * selectionStart;
             previewAudio.play().catch(e => console.log("Play interrupted"));
@@ -830,10 +741,7 @@
 
     function updateEffectButtons() {
       if (activeEffects.size === 0) {
-          ui.fxButtons.forEach(btn => {
-             if (btn.dataset.fx === 'none') btn.classList.add('active');
-             else btn.classList.remove('active');
-          });
+          ui.fxButtons.forEach(btn => { if (btn.dataset.fx === 'none') btn.classList.add('active'); else btn.classList.remove('active'); });
           return;
       }
       ui.fxButtons.forEach(btn => { 
@@ -850,35 +758,23 @@
       previewAudio.playbackRate = speed;
       previewAudio.preservesPitch = true; 
     });
-
     ui.pitchSlider.addEventListener('input', () => {
       const pitch = parseInt(ui.pitchSlider.value);
       ui.valPitch.innerText = pitch;
-      if (pitchNode && pitchNode.setPitch) pitchNode.setPitch(pitch);
-      else buildPreviewGraph();
+      if (pitchNode && pitchNode.setPitch) pitchNode.setPitch(pitch); else buildPreviewGraph();
     });
-
-    ui.mixSlider.addEventListener('input', () => {
-        ui.valMix.innerText = ui.mixSlider.value + "%";
-        buildPreviewGraph();
-    });
+    ui.mixSlider.addEventListener('input', () => { ui.valMix.innerText = ui.mixSlider.value + "%"; buildPreviewGraph(); });
 
     function createPreviewJungle(ctx) {
-        const bufferSize = 4096;
-        const node = ctx.createScriptProcessor(bufferSize, 1, 1);
-        const bufferLen = 4096;
-        const buffer = new Float32Array(bufferLen);
-        let writeIdx = 0; let readIdx = 0;
-        node.pitchRatio = 1.0;
+        const bufferSize = 4096; const node = ctx.createScriptProcessor(bufferSize, 1, 1);
+        const bufferLen = 4096; const buffer = new Float32Array(bufferLen);
+        let writeIdx = 0; let readIdx = 0; node.pitchRatio = 1.0;
         node.onaudioprocess = function(e) {
-            const input = e.inputBuffer.getChannelData(0);
-            const output = e.outputBuffer.getChannelData(0);
+            const input = e.inputBuffer.getChannelData(0); const output = e.outputBuffer.getChannelData(0);
             if (Math.abs(node.pitchRatio - 1.0) < 0.01) { output.set(input); return; }
             for (let i = 0; i < input.length; i++) {
-                buffer[writeIdx] = input[i];
-                writeIdx = (writeIdx + 1) % bufferLen;
-                const idx = Math.floor(readIdx);
-                const frac = readIdx - idx;
+                buffer[writeIdx] = input[i]; writeIdx = (writeIdx + 1) % bufferLen;
+                const idx = Math.floor(readIdx); const frac = readIdx - idx;
                 const idxNext = (idx + 1) % bufferLen;
                 output[i] = buffer[idx] * (1-frac) + buffer[idxNext] * frac;
                 readIdx = (readIdx + node.pitchRatio) % bufferLen;
@@ -893,30 +789,24 @@
     function buildPreviewGraph() {
       if(!previewSource) return;
       try { previewSource.disconnect(); } catch(e){}
-      
       const pitchVal = parseInt(ui.pitchSlider.value);
       let last = previewSource;
-      
       if (pitchVal !== 0) {
           pitchNode = createPreviewJungle(previewContext);
           pitchNode.setPitch(pitchVal);
           last.connect(pitchNode);
           last = pitchNode;
       } else { pitchNode = null; }
-      
       connectMultiEffects(previewContext, last, previewContext.destination);
     }
 
     function connectMultiEffects(ctx, src, dest) {
-        let currentInput = src;
-        const intensity = parseInt(ui.mixSlider.value) / 100;
-        
+        let currentInput = src; const intensity = parseInt(ui.mixSlider.value) / 100;
         if (activeEffects.has('robot')) currentInput = applyRobot(ctx, currentInput, intensity);
         if (activeEffects.has('radio')) currentInput = applyRadio(ctx, currentInput, intensity);
         if (activeEffects.has('magic')) currentInput = applyMagic(ctx, currentInput, intensity);
         if (activeEffects.has('studio')) currentInput = applyStudio(ctx, currentInput, intensity);
         if (activeEffects.has('echo')) currentInput = applyEcho(ctx, currentInput, intensity);
-        
         currentInput.connect(dest);
     }
 
@@ -925,16 +815,14 @@
         const feedback = ctx.createGain(); feedback.gain.value = 0.3 * intensity;
         const wet = ctx.createGain(); wet.gain.value = 0.5 * intensity;
         input.connect(delay); delay.connect(feedback); feedback.connect(delay); delay.connect(wet);
-        const output = ctx.createGain(); input.connect(output); wet.connect(output);
-        return output;
+        const output = ctx.createGain(); input.connect(output); wet.connect(output); return output;
     }
     function applyRobot(ctx, input, intensity) {
         const osc = ctx.createOscillator(); osc.frequency.value = 50; osc.start();
         const gain = ctx.createGain(); osc.connect(gain.gain);
         const wet = ctx.createGain(); const dry = ctx.createGain();
         input.connect(wet); wet.connect(gain); input.connect(dry); wet.gain.value = 1.0;
-        const mix = ctx.createGain(); gain.connect(mix); dry.connect(mix);
-        input.connect(gain); return gain; 
+        const mix = ctx.createGain(); gain.connect(mix); dry.connect(mix); input.connect(gain); return gain; 
     }
     function applyRadio(ctx, input, intensity) {
         const f = ctx.createBiquadFilter(); f.type='bandpass'; 
@@ -950,8 +838,7 @@
         conv.buffer=b; 
         const wet = ctx.createGain(); wet.gain.value = 0.5 * intensity;
         const output = ctx.createGain();
-        input.connect(eq); eq.connect(output); eq.connect(conv); conv.connect(wet); wet.connect(output);
-        return output;
+        input.connect(eq); eq.connect(output); eq.connect(conv); conv.connect(wet); wet.connect(output); return output;
     }
     function applyMagic(ctx, input, intensity) {
         const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -20; comp.ratio.value = 4;
@@ -959,9 +846,7 @@
         const delay = ctx.createDelay(); delay.delayTime.value = 0.15;
         const delayMix = ctx.createGain(); delayMix.gain.value = 0.15 * intensity;
         const output = ctx.createGain();
-        input.connect(comp); comp.connect(eq); eq.connect(output);
-        eq.connect(delay); delay.connect(delayMix); delayMix.connect(output);
-        return output;
+        input.connect(comp); comp.connect(eq); eq.connect(output); eq.connect(delay); delay.connect(delayMix); delayMix.connect(output); return output;
     }
     function makeDistortionCurve(k) {
       if (k <= 0) return new Float32Array([0,0]);
@@ -976,10 +861,7 @@
       if (previewAudio.currentTime < d*selectionStart || previewAudio.currentTime >= d*selectionEnd) {
         previewAudio.currentTime = d*selectionStart;
       }
-      previewAudio.play().then(() => {
-          ui.btnPlay.classList.add('active');
-          monitorPlayback();
-      }).catch(e => console.error(e));
+      previewAudio.play().then(() => { ui.btnPlay.classList.add('active'); monitorPlayback(); }).catch(e => console.error(e));
     });
     ui.btnPause.addEventListener('click', () => { previewAudio.pause(); ui.btnPlay.classList.remove('active'); });
     ui.btnStopPlay.addEventListener('click', () => {
@@ -1002,7 +884,6 @@
       const ctx = ui.canvas.getContext('2d');
       const w = ui.canvas.width; const h = ui.canvas.height;
       if (!originalBuffer) return;
-      
       const data = originalBuffer.getChannelData(0);
       const step = Math.ceil(data.length / w);
       const amp = h/2;
@@ -1027,7 +908,6 @@
     });
     window.addEventListener('mousemove', e => { if(isDragging) updateSel(e); });
     window.addEventListener('mouseup', () => { isDragging=false; });
-    
     ui.canvas.addEventListener('touchstart', e => {
         isDragging = true; const rect = ui.canvas.getBoundingClientRect(); dragStartX = e.touches[0].clientX - rect.left; updateSel(e.touches[0]);
     }, {passive: false});
@@ -1051,99 +931,52 @@
     }
     function fmt(s) { const m=Math.floor(s/60); const sc=Math.floor(s%60); return `${m}:${sc.toString().padStart(2,'0')}`; }
 
-    // --- ENGINE SOLA OPTIMIZED FOR VOICE ---
+    // --- ENGINE SOLA ---
     function processAudioSOLA(buffer, speed, pitch) {
         const channelData = buffer.getChannelData(0);
-        
         const pitchFactor = Math.pow(2, pitch / 1200);
         const resampledLen = Math.floor(channelData.length / pitchFactor);
         const resampled = new Float32Array(resampledLen);
-        
         for (let i = 0; i < resampledLen; i++) {
-            const idx = i * pitchFactor;
-            const intIdx = Math.floor(idx);
-            const frac = idx - intIdx;
-            const y0 = channelData[Math.max(0, intIdx - 1)];
-            const y1 = channelData[Math.max(0, intIdx)];
-            const y2 = channelData[Math.min(channelData.length - 1, intIdx + 1)];
-            const y3 = channelData[Math.min(channelData.length - 1, intIdx + 2)];
-            
-            const a = -0.5 * y0 + 1.5 * y1 - 1.5 * y2 + 0.5 * y3;
-            const b = y0 - 2.5 * y1 + 2 * y2 - 0.5 * y3;
-            const c = -0.5 * y0 + 0.5 * y2;
-            const d = y1;
+            const idx = i * pitchFactor; const intIdx = Math.floor(idx); const frac = idx - intIdx;
+            const y0 = channelData[Math.max(0, intIdx - 1)]; const y1 = channelData[Math.max(0, intIdx)];
+            const y2 = channelData[Math.min(channelData.length - 1, intIdx + 1)]; const y3 = channelData[Math.min(channelData.length - 1, intIdx + 2)];
+            const a = -0.5 * y0 + 1.5 * y1 - 1.5 * y2 + 0.5 * y3; const b = y0 - 2.5 * y1 + 2 * y2 - 0.5 * y3;
+            const c = -0.5 * y0 + 0.5 * y2; const d = y1;
             resampled[i] = a*frac*frac*frac + b*frac*frac + c*frac + d;
         }
-        
         const stretchFactor = speed / pitchFactor;
-        
         if (Math.abs(stretchFactor - 1.0) < 0.01) return resampled;
-        
-        const windowSize = 2048; 
-        const overlap = 1024; 
-        const searchRange = 512;
-        
-        const analysisHop = windowSize - overlap;
-        const synthesisHop = Math.floor(analysisHop / stretchFactor);
-        
+        const windowSize = 2048; const overlap = 1024; const searchRange = 512;
+        const analysisHop = windowSize - overlap; const synthesisHop = Math.floor(analysisHop / stretchFactor);
         const outputLen = Math.floor(resampled.length / stretchFactor);
         const output = new Float32Array(outputLen + windowSize);
-        
         const window = new Float32Array(windowSize);
-        for (let i = 0; i < windowSize; i++) {
-            window[i] = 0.5 * (1 - Math.cos(2 * Math.PI * i / (windowSize - 1)));
-        }
-        
-        let inPos = 0;
-        let outPos = 0;
-        
-        for(let i=0; i<windowSize && i<resampled.length; i++) {
-            output[i] = resampled[i] * window[i]; 
-        }
-        
-        outPos += synthesisHop;
-        inPos += analysisHop;
-        
+        for (let i = 0; i < windowSize; i++) window[i] = 0.5 * (1 - Math.cos(2 * Math.PI * i / (windowSize - 1)));
+        let inPos = 0; let outPos = 0;
+        for(let i=0; i<windowSize && i<resampled.length; i++) output[i] = resampled[i] * window[i]; 
+        outPos += synthesisHop; inPos += analysisHop;
         while (inPos + windowSize < resampled.length && outPos + windowSize < output.length) {
-            let bestOffset = 0;
-            let maxCorr = -Infinity;
-            
+            let bestOffset = 0; let maxCorr = -Infinity;
             for (let i = 0; i < searchRange; i++) {
                 let corr = 0;
                 for (let j = 0; j < overlap; j += 4) {
-                    const s1 = output[outPos + j];
-                    const s2 = resampled[inPos + i + j];
+                    const s1 = output[outPos + j]; const s2 = resampled[inPos + i + j];
                     corr -= Math.abs(s1 - s2);
                 }
-                if (corr > maxCorr) {
-                    maxCorr = corr;
-                    bestOffset = i;
-                }
+                if (corr > maxCorr) { maxCorr = corr; bestOffset = i; }
             }
-            
             const actualIn = inPos + bestOffset;
-            
             for (let i = 0; i < windowSize; i++) {
                 if (actualIn + i >= resampled.length) break;
                 const grain = resampled[actualIn + i] * window[i];
-                if (i < overlap) {
-                    output[outPos + i] += grain;
-                } else {
-                    output[outPos + i] = grain;
-                }
+                if (i < overlap) output[outPos + i] += grain; else output[outPos + i] = grain;
             }
-            
-            outPos += synthesisHop;
-            inPos += analysisHop;
+            outPos += synthesisHop; inPos += analysisHop;
         }
-        
         let maxVal = 0;
         for(let i=0; i<output.length; i++) if(Math.abs(output[i]) > maxVal) maxVal = Math.abs(output[i]);
-        if(maxVal > 0.99) {
-            const gain = 0.98 / maxVal;
-            for(let i=0; i<output.length; i++) output[i] *= gain;
-        }
-        
+        if(maxVal > 0.99) { const gain = 0.98 / maxVal; for(let i=0; i<output.length; i++) output[i] *= gain; }
         return output;
     }
 
@@ -1152,14 +985,12 @@
       previewAudio.pause();
       setUIState('processing');
       ui.status.innerText = "Processando Alta Qualidade...";
-
       setTimeout(async () => {
         try {
           await ensureAudioContext();
           const speed = parseFloat(ui.speedSlider.value);
           const pitch = parseInt(ui.pitchSlider.value);
           const rate = originalBuffer.sampleRate;
-          
           const sFrame = Math.floor(selectionStart * originalBuffer.length);
           const eFrame = Math.floor(selectionEnd * originalBuffer.length);
           const sliceLen = eFrame - sFrame;
@@ -1175,11 +1006,9 @@
           const src = offCtx.createBufferSource();
           const tempBuf = offCtx.createBuffer(1, processedData.length, rate);
           tempBuf.copyToChannel(processedData, 0);
-          src.buffer = tempBuf;
-          src.playbackRate.value = 1.0; 
+          src.buffer = tempBuf; src.playbackRate.value = 1.0; 
           
           connectMultiEffects(offCtx, src, offCtx.destination);
-          
           src.start();
           const rendered = await offCtx.startRendering();
 
@@ -1196,16 +1025,12 @@
               if(b.length>0) mp3Data.push(b);
           }
           const fl = mp3Enc.flush(); if(fl.length>0) mp3Data.push(fl);
-
           mp3Blob = new Blob(mp3Data, { type: 'audio/mpeg' });
           mp3Url = URL.createObjectURL(mp3Blob);
-
-          resultAudio.src = mp3Url;
-          resultAudio.style.display = 'block';
+          resultAudio.src = mp3Url; resultAudio.style.display = 'block';
           setUIState('done');
         } catch (err) {
-          console.error(err);
-          ui.status.innerText = "Erro ao processar! " + err.message;
+          console.error(err); ui.status.innerText = "Erro ao processar! " + err.message;
           setTimeout(() => { ui.editor.style.display = 'flex'; ui.finalWrapper.style.display = 'none'; }, 2000);
         }
       }, 150); 
@@ -1215,6 +1040,7 @@
       const d = (el, show) => { if(el) el.style.display = show ? (el.tagName==='BUTTON'?'flex':'block') : 'none'; };
       
       d(ui.record, s==='idle');
+      d(ui.recordSys, s==='idle'); // Toggle novo botão
       d(ui.btnUpload, s==='idle');
       d(ui.stop, s==='recording');
       d(ui.editor, s==='editing');
@@ -1223,6 +1049,7 @@
       
       if(s==='done') {
           if(ui.record) ui.record.style.display = 'none';
+          if(ui.recordSys) ui.recordSys.style.display = 'none';
           if(ui.btnUpload) ui.btnUpload.style.display = 'none';
           if(ui.share) ui.share.style.display = 'block';
           if(ui.btnBackEdit) ui.btnBackEdit.style.display = 'block';
