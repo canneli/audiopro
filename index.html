@@ -705,15 +705,31 @@
 
     // --- FUNÇÃO DE INICIAR GRAVAÇÃO (Genérica) ---
     async function startRecordingLogic(stream) {
-        startVisualizer(stream);
-        const options = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 128000 } : {};
-        mediaRecorder = new MediaRecorder(stream, options);
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        // CORREÇÃO CRÍTICA: Extrair APENAS a faixa de áudio para criar um novo stream limpo
+        // Isso evita que o MediaRecorder receba vídeo e crie um arquivo inválido para 'audio/webm'
+        let audioStream = stream;
+        if (stream.getVideoTracks().length > 0) {
+             const audioTracks = stream.getAudioTracks();
+             if (audioTracks.length > 0) {
+                 audioStream = new MediaStream(audioTracks);
+             }
+        }
+
+        startVisualizer(audioStream);
+        
+        const options = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') 
+            ? { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 128000 } 
+            : {};
+            
+        mediaRecorder = new MediaRecorder(audioStream, options);
+        mediaRecorder.ondataavailable = e => {
+            if (e.data.size > 0) audioChunks.push(e.data);
+        };
         mediaRecorder.onstop = async () => {
           stopVisualizer();
-          // Mata o stream ao parar a gravação (padrão do app)
+          // Mata o stream original completo (incluindo vídeo se houver) para liberar a aba/mic
           stream.getTracks().forEach(t => t.stop());
-          currentSystemStream = null; // Limpa referência
+          currentSystemStream = null; 
           
           const blob = new Blob(audioChunks, { type: 'audio/webm' });
           await loadEditor(blob);
