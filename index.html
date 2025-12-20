@@ -541,6 +541,9 @@
     let previewSource = null;
     let pitchNode = null; 
     let activeEffects = new Set();
+    
+    // VARIÁVEL PARA GUARDAR STREAM DE TELA/GUIA
+    let currentSystemStream = null;
 
     let selectionStart = 0;
     let selectionEnd = 1;
@@ -625,13 +628,65 @@
 
       } catch (e) { 
           ui.mic.innerHTML = '<option value="default">Padrão (Permita o Mic)</option>';
-          // Adiciona a opção de sistema mesmo se falhar o mic (pois usa API diferente)
           const sysOption = document.createElement('option');
           sysOption.value = 'browser_tab_audio';
           sysOption.text = '📺 Gravar do Navegador (Guia)';
           ui.mic.appendChild(sysOption);
       }
     }
+    
+    // --- NOVO LISTENER: SELEÇÃO DA GUIA NO DROPDOWN ---
+    ui.mic.addEventListener('change', async () => {
+        if (ui.mic.value === 'browser_tab_audio') {
+            // Se já tinha um, para o anterior
+            if (currentSystemStream) {
+                currentSystemStream.getTracks().forEach(t => t.stop());
+                currentSystemStream = null;
+            }
+
+            try {
+                // Chama a seleção imediatamente
+                const stream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { displaySurface: "browser" },
+                    audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+                });
+
+                // Verifica se o usuário marcou "Compartilhar áudio"
+                if (stream.getAudioTracks().length === 0) {
+                    stream.getTracks().forEach(t => t.stop());
+                    alert("⚠️ Você não marcou a caixa 'Compartilhar áudio'. Por favor, selecione a opção novamente.");
+                    ui.mic.value = 'default'; // Reseta seleção para forçar o usuário a escolher de novo
+                    // Tenta voltar ao primeiro mic se possível
+                    if(ui.mic.options.length > 2) ui.mic.selectedIndex = 2;
+                    return;
+                }
+
+                currentSystemStream = stream;
+                ui.status.innerText = "Guia selecionada. Clique em GRAVAR.";
+                
+                // Se o usuário clicar em "Parar compartilhamento" na barrinha do navegador
+                stream.getVideoTracks()[0].onended = () => {
+                    currentSystemStream = null;
+                    ui.status.innerText = "Compartilhamento encerrado.";
+                    // Volta para mic padrão
+                    if(ui.mic.options.length > 2) ui.mic.selectedIndex = 2;
+                    else ui.mic.value = 'default';
+                };
+
+            } catch (err) {
+                console.error(err);
+                // Se cancelar, volta para o mic padrão
+                if(ui.mic.options.length > 2) ui.mic.selectedIndex = 2;
+            }
+        } else {
+             // Se trocou para microfone, cancela o stream de tela
+             if (currentSystemStream) {
+                currentSystemStream.getTracks().forEach(t => t.stop());
+                currentSystemStream = null;
+            }
+            ui.status.innerText = "Microfone selecionado.";
+        }
+    });
 
     ui.btnUpload.addEventListener('click', () => ui.uploadInput.click());
     ui.uploadInput.addEventListener('change', async (e) => {
@@ -656,7 +711,10 @@
         mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
         mediaRecorder.onstop = async () => {
           stopVisualizer();
+          // Mata o stream ao parar a gravação (padrão do app)
           stream.getTracks().forEach(t => t.stop());
+          currentSystemStream = null; // Limpa referência
+          
           const blob = new Blob(audioChunks, { type: 'audio/webm' });
           await loadEditor(blob);
         };
@@ -664,7 +722,7 @@
         setUIState('recording');
     }
 
-    // --- CLICK DO BOTÃO ÚNICO DE GRAVAÇÃO ---
+    // --- CLICK DO BOTÃO DE GRAVAÇÃO (Lógica Atualizada) ---
     ui.record.addEventListener('click', async () => {
       await ensureAudioContext();
       originalBuffer = null; audioChunks = [];
@@ -672,28 +730,16 @@
 
       try {
         if (selectedValue === 'browser_tab_audio') {
-            // --- MODO: GRAVAR DO NAVEGADOR ---
-            // Nota: getDisplayMedia pede permissão de tela
-            const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: { displaySurface: "browser" }, 
-                audio: { 
-                    echoCancellation: false, 
-                    noiseSuppression: false, 
-                    autoGainControl: false 
-                }
-            });
-
-            // Verifica se marcou "Compartilhar áudio"
-            if (stream.getAudioTracks().length === 0) {
-                stream.getTracks().forEach(t => t.stop());
-                alert("⚠️ Para gravar o som, você precisa marcar a caixinha 'Compartilhar áudio da guia' na janela que se abriu.");
-                return;
+            // MODO NAVEGADOR: Usa o stream já capturado
+            if (currentSystemStream && currentSystemStream.active) {
+                startRecordingLogic(currentSystemStream);
+            } else {
+                alert("Nenhuma guia selecionada ou a seleção expirou. Por favor, selecione 'Gravar do Navegador' novamente na lista.");
+                // Tenta resetar para forçar o evento change se o usuário selecionar de novo
+                ui.mic.value = 'default';
             }
-            ui.status.innerText = "Capturando áudio da guia...";
-            startRecordingLogic(stream);
-
         } else {
-            // --- MODO: GRAVAR MICROFONE ---
+            // MODO MICROFONE: Pede permissão na hora
             const constraints = { 
                 audio: { 
                     deviceId: selectedValue ? { exact: selectedValue } : undefined, 
@@ -1110,6 +1156,18 @@
     ui.finalReset.addEventListener('click', () => {
         mp3Blob = null; mp3Url = null; originalBuffer = null; audioChunks = [];
         resultAudio.style.display = 'none'; resultAudio.src = '';
+        
+        // RESETAR STREAM DE SISTEMA SE ESTIVER ATIVO
+        if (currentSystemStream) {
+            currentSystemStream.getTracks().forEach(t => t.stop());
+            currentSystemStream = null;
+        }
+        // VOLTAR SELEÇÃO PARA PADRÃO SE ESTIVER EM NAVEGADOR
+        if (ui.mic.value === 'browser_tab_audio') {
+             if(ui.mic.options.length > 2) ui.mic.selectedIndex = 2;
+             else ui.mic.value = 'default';
+        }
+
         setUIState('idle');
     });
     
