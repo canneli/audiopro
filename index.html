@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Canneli Audio Beta</title>
    
+  <!-- Ícones -->
   <link rel="icon" id="faviconLink" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff0055'/%3E%3Cstop offset='100%25' stop-color='%238800ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='120' fill='url(%23bg)'/%3E%3Cpath d='M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0' stroke='%23ffffff' stroke-width='40' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="apple-touch-icon" id="appleIconLink" href="">
 
+  <!-- SCRIPT DE GERAÇÃO DE ÍCONE IOS -->
   <script>
     (function() {
       const size = 512;
@@ -52,22 +54,24 @@
     })();
   </script>
 
+  <!-- PWA MANIFEST -->
   <link rel="manifest" href='data:application/manifest+json,{"name":"Canneli Audio Beta","short_name":"Canneli","start_url":".","id":"/","display":"standalone","background_color":"#08000a","theme_color":"#ff0055","description":"Gravador de audio profissional","orientation":"portrait","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Cdefs%3E%3ClinearGradient id=%27bg%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%23ff0055%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%238800ff%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%27512%27 height=%27512%27 rx=%27120%27 fill=%27url(%23bg)%27/%3E%3Cpath d=%27M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0%27 stroke=%27%23ffffff%27 stroke-width=%2740%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Cdefs%3E%3ClinearGradient id=%27bg%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%23ff0055%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%238800ff%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%27512%27 height=%27512%27 rx=%27120%27 fill=%27url(%23bg)%27/%3E%3Cpath d=%27M128 256h0m32-96v192m64-288v384m64-256v128m64-192v256m64-64h0%27 stroke=%27%23ffffff%27 stroke-width=%2740%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}]}'>
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+  <!-- Fonte Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
+  <!-- LAMEJS -->
   <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
 
   <style>
     :root {
       --primary: #ff0055;
       --secondary: #8800ff;
-      --cyan: #00e5ff;
       --accent: #ffffff;
       --bg-deep: #08000a;
       --glass-panel: rgba(20, 10, 30, 0.6);
@@ -235,6 +239,9 @@
     }
     select:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
     .select-arrow { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 8px; color: var(--text-muted); }
+    
+    /* Option styling fallback */
+    option { background-color: #000; color: #fff; }
 
     /* EDITOR AREA */
     #editorArea {
@@ -329,14 +336,6 @@
     #btnRecord { background: linear-gradient(135deg, #ff0055, #ff0000); color: white; margin-bottom: 10px; }
     #btnRecord:hover { box-shadow: 0 0 30px rgba(255, 0, 85, 0.6); transform: translateY(-1px); }
     
-    /* Novo botão para Sistema */
-    #btnRecordSys { 
-        background: linear-gradient(135deg, #00e5ff, #2979ff); 
-        color: #000; 
-        margin-bottom: 15px; 
-    }
-    #btnRecordSys:hover { box-shadow: 0 0 30px rgba(0, 229, 255, 0.6); transform: translateY(-1px); color: #fff; }
-
     #btnStop { background: #fff; color: #000; display: none; }
     
     #btnTrim { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: #fff; }
@@ -392,6 +391,7 @@
         <span class="select-arrow">▼</span>
       </div>
 
+      <!-- VISUALIZER -->
       <div class="visualizer" id="visualizer">
         <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
         <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -399,6 +399,7 @@
         <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
       </div>
 
+      <!-- EDITOR -->
       <div id="editorArea">
         <canvas id="waveCanvas" width="330" height="90"></canvas>
         <div class="editor-time">
@@ -414,6 +415,7 @@
         <button id="btnTrim" class="btn-main">PROCESSAR E SALVAR</button>
       </div>
 
+      <!-- Final Split Area -->
       <div id="finalWrapper">
         <div id="finalSave" draggable="true" class="final-card" title="Clique para baixar ou arraste">
           <div class="icon-save">💾</div>
@@ -427,6 +429,7 @@
         </div>
       </div>
 
+      <!-- Effects -->
       <div class="effects-container-block">
         <span class="section-title">Estúdio de Efeitos</span>
         <div class="effects-grid">
@@ -439,6 +442,7 @@
         </div>
       </div>
 
+      <!-- Sliders -->
       <div id="paramControls">
         <div class="slider-row" id="rowSpeed">
           <label>Velocidade</label>
@@ -460,8 +464,8 @@
       <audio id="resultPlayer" controls></audio>
       <button id="btnBackEdit">↩ Voltar para Edição</button>
 
-      <button id="btnRecord" class="btn-main"><span>● GRAVAR MICROFONE</span></button>
-      <button id="btnRecordSys" class="btn-main"><span>📺 GRAVAR DO NAVEGADOR</span></button>
+      <!-- Botão de Gravação Único -->
+      <button id="btnRecord" class="btn-main"><span>● INICIAR GRAVAÇÃO</span></button>
       
       <button id="btnUpload"><span>📁</span> Importar Áudio</button>
       <input type="file" id="uploadInput" accept="audio/*" hidden>
@@ -474,6 +478,7 @@
     </div>
   </main>
   
+  <!-- BOTÃO FLUTUANTE DE INSTALAÇÃO -->
   <button id="btnInstall" title="Instalar Aplicativo">
     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
     INSTALAR
@@ -544,7 +549,6 @@
 
     const ui = {
       record: document.getElementById('btnRecord'),
-      recordSys: document.getElementById('btnRecordSys'), // NOVO
       stop: document.getElementById('btnStop'),
       trim: document.getElementById('btnTrim'),
       btnUpload: document.getElementById('btnUpload'),
@@ -592,14 +596,41 @@
         await navigator.mediaDevices.getUserMedia({ audio: true });
         const devices = await navigator.mediaDevices.enumerateDevices();
         const mics = devices.filter(d => d.kind === 'audioinput');
+        
         ui.mic.innerHTML = '';
-        if (mics.length === 0) ui.mic.innerHTML = '<option>Microfone Padrão</option>';
+        
+        // OPÇÃO MANUAL: GRAVAR DO NAVEGADOR
+        const sysOption = document.createElement('option');
+        sysOption.value = 'browser_tab_audio';
+        sysOption.text = '📺 Gravar do Navegador (Guia)';
+        sysOption.style.fontWeight = "bold";
+        sysOption.style.color = "#00e5ff";
+        ui.mic.appendChild(sysOption);
+        
+        if (mics.length > 0) {
+            const separator = document.createElement('option');
+            separator.disabled = true;
+            separator.text = '──────────';
+            ui.mic.appendChild(separator);
+        }
+
         mics.forEach(d => {
           const opt = document.createElement('option');
-          opt.value = d.deviceId; opt.text = d.label || `Mic ${ui.mic.length + 1}`;
+          opt.value = d.deviceId; opt.text = d.label || `Mic ${ui.mic.length - 1}`;
           ui.mic.appendChild(opt);
         });
-      } catch (e) { ui.mic.innerHTML = '<option>Padrão (Permita o Mic)</option>'; }
+        
+        // Selecionar o primeiro mic real por padrão se existir
+        if(ui.mic.options.length > 2) ui.mic.selectedIndex = 2;
+
+      } catch (e) { 
+          ui.mic.innerHTML = '<option value="default">Padrão (Permita o Mic)</option>';
+          // Adiciona a opção de sistema mesmo se falhar o mic (pois usa API diferente)
+          const sysOption = document.createElement('option');
+          sysOption.value = 'browser_tab_audio';
+          sysOption.text = '📺 Gravar do Navegador (Guia)';
+          ui.mic.appendChild(sysOption);
+      }
     }
 
     ui.btnUpload.addEventListener('click', () => ui.uploadInput.click());
@@ -633,54 +664,58 @@
         setUIState('recording');
     }
 
-    // --- GRAVAR MICROFONE ---
+    // --- CLICK DO BOTÃO ÚNICO DE GRAVAÇÃO ---
     ui.record.addEventListener('click', async () => {
-      try {
-        await ensureAudioContext();
-        originalBuffer = null; audioChunks = [];
-        const constraints = { audio: { deviceId: ui.mic.value ? { exact: ui.mic.value } : undefined, echoCancellation: true, noiseSuppression: true } };
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        startRecordingLogic(stream);
-      } catch (e) { alert("Erro no microfone."); }
-    });
+      await ensureAudioContext();
+      originalBuffer = null; audioChunks = [];
+      const selectedValue = ui.mic.value;
 
-    // --- GRAVAR NAVEGADOR (SISTEMA) ---
-    ui.recordSys.addEventListener('click', async () => {
       try {
-        await ensureAudioContext();
-        originalBuffer = null; audioChunks = [];
-        // Para áudio de sistema, usamos getDisplayMedia. 
-        // Nota: Chrome exige 'video: true' para permitir compartilhar a aba, mesmo que a gente só queira áudio.
-        const stream = await navigator.mediaDevices.getDisplayMedia({
-            video: { displaySurface: "browser" }, 
-            audio: { 
-                echoCancellation: false, 
-                noiseSuppression: false, 
-                autoGainControl: false 
+        if (selectedValue === 'browser_tab_audio') {
+            // --- MODO: GRAVAR DO NAVEGADOR ---
+            // Nota: getDisplayMedia pede permissão de tela
+            const stream = await navigator.mediaDevices.getDisplayMedia({
+                video: { displaySurface: "browser" }, 
+                audio: { 
+                    echoCancellation: false, 
+                    noiseSuppression: false, 
+                    autoGainControl: false 
+                }
+            });
+
+            // Verifica se marcou "Compartilhar áudio"
+            if (stream.getAudioTracks().length === 0) {
+                stream.getTracks().forEach(t => t.stop());
+                alert("⚠️ Para gravar o som, você precisa marcar a caixinha 'Compartilhar áudio da guia' na janela que se abriu.");
+                return;
             }
-        });
+            ui.status.innerText = "Capturando áudio da guia...";
+            startRecordingLogic(stream);
 
-        // Verifica se o usuário marcou a caixa de áudio
-        if (stream.getAudioTracks().length === 0) {
-            stream.getTracks().forEach(t => t.stop());
-            alert("⚠️ Você esqueceu de marcar 'Compartilhar áudio da guia' na janela do navegador.");
-            return;
+        } else {
+            // --- MODO: GRAVAR MICROFONE ---
+            const constraints = { 
+                audio: { 
+                    deviceId: selectedValue ? { exact: selectedValue } : undefined, 
+                    echoCancellation: true, 
+                    noiseSuppression: true 
+                } 
+            };
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            startRecordingLogic(stream);
         }
-
-        ui.status.innerText = "Capturando áudio da aba...";
-        startRecordingLogic(stream);
       } catch (e) {
-        console.error(e);
-        if(e.name !== 'NotAllowedError') alert("Erro ao capturar sistema: " + e.message);
+         console.error(e);
+         if(e.name !== 'NotAllowedError') alert("Erro ao acessar dispositivo: " + e.message);
       }
     });
+
 
     ui.stop.addEventListener('click', () => mediaRecorder?.state !== 'inactive' && mediaRecorder.stop());
 
     let animationId;
     function startVisualizer(stream) {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      // Se for stream de display, pode ter vídeo, pegamos só o audio
       let src;
       try { src = audioCtx.createMediaStreamSource(stream); } catch(e) { return; }
       
@@ -1040,7 +1075,6 @@
       const d = (el, show) => { if(el) el.style.display = show ? (el.tagName==='BUTTON'?'flex':'block') : 'none'; };
       
       d(ui.record, s==='idle');
-      d(ui.recordSys, s==='idle'); // Toggle novo botão
       d(ui.btnUpload, s==='idle');
       d(ui.stop, s==='recording');
       d(ui.editor, s==='editing');
@@ -1049,7 +1083,6 @@
       
       if(s==='done') {
           if(ui.record) ui.record.style.display = 'none';
-          if(ui.recordSys) ui.recordSys.style.display = 'none';
           if(ui.btnUpload) ui.btnUpload.style.display = 'none';
           if(ui.share) ui.share.style.display = 'block';
           if(ui.btnBackEdit) ui.btnBackEdit.style.display = 'block';
